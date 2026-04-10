@@ -1,0 +1,417 @@
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-sans); background: #0a0f1e; color: #fff; }
+
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.2rem 3rem;
+    background: rgba(10,15,30,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid rgba(255,255,255,0.08);
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .logo-icon {
+    width: 38px; height: 38px; background: linear-gradient(135deg, #00c6ff, #0072ff);
+    border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .logo-icon svg { width: 22px; height: 22px; fill: #fff; }
+  .logo-text { font-size: 22px; font-weight: 600; letter-spacing: 2px; color: #fff; }
+  .logo-text span { color: #00c6ff; }
+  .nav-links { display: flex; gap: 2rem; align-items: center; }
+  .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 14px; letter-spacing: 0.5px; transition: color 0.2s; }
+  .nav-links a:hover { color: #fff; }
+  .nav-cta {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    color: #fff; border: none; padding: 0.55rem 1.4rem;
+    border-radius: 25px; font-size: 14px; font-weight: 500;
+    cursor: pointer; letter-spacing: 0.3px;
+  }
+
+  .hero {
+    min-height: 100vh;
+    background: radial-gradient(ellipse at 30% 50%, rgba(0,114,255,0.18) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(0,198,255,0.12) 0%, transparent 50%),
+                #0a0f1e;
+    display: flex; align-items: center;
+    padding: 8rem 3rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .hero-content { max-width: 560px; position: relative; z-index: 2; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(0,198,255,0.1); border: 0.5px solid rgba(0,198,255,0.3);
+    color: #00c6ff; font-size: 12px; letter-spacing: 1px; text-transform: uppercase;
+    padding: 0.4rem 1rem; border-radius: 20px; margin-bottom: 1.5rem;
+  }
+  .hero-badge::before { content: ''; width: 6px; height: 6px; background: #00c6ff; border-radius: 50%; }
+  .hero h1 {
+    font-size: 3.4rem; font-weight: 700; line-height: 1.1;
+    margin-bottom: 1.2rem; letter-spacing: -1px;
+  }
+  .hero h1 .accent { color: #00c6ff; }
+  .hero p {
+    font-size: 1.1rem; color: rgba(255,255,255,0.6); line-height: 1.7;
+    margin-bottom: 2rem; max-width: 460px;
+  }
+  .hero-btns { display: flex; gap: 1rem; align-items: center; }
+  .btn-primary {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    color: #fff; border: none; padding: 0.85rem 2rem;
+    border-radius: 30px; font-size: 15px; font-weight: 500;
+    cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,114,255,0.4); }
+  .btn-secondary {
+    color: rgba(255,255,255,0.7); background: none; border: 0.5px solid rgba(255,255,255,0.2);
+    padding: 0.85rem 2rem; border-radius: 30px; font-size: 15px; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
+
+  .hero-visual {
+    position: absolute; right: 3rem; top: 50%; transform: translateY(-50%);
+    width: 500px; height: 500px; z-index: 1;
+  }
+  .hero-img-main {
+    width: 420px; height: 340px; border-radius: 20px; overflow: hidden;
+    position: absolute; top: 0; right: 0;
+    border: 0.5px solid rgba(255,255,255,0.1);
+  }
+  .hero-img-main img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-img-float {
+    width: 200px; height: 155px; border-radius: 16px; overflow: hidden;
+    position: absolute; bottom: 0; left: 0;
+    border: 2px solid rgba(0,198,255,0.3);
+    box-shadow: 0 0 30px rgba(0,114,255,0.3);
+  }
+  .hero-img-float img { width: 100%; height: 100%; object-fit: cover; }
+
+  .stats {
+    display: flex; gap: 2.5rem; margin-top: 2.5rem; padding-top: 2rem;
+    border-top: 0.5px solid rgba(255,255,255,0.1);
+  }
+  .stat-item { }
+  .stat-num { font-size: 1.8rem; font-weight: 700; color: #fff; line-height: 1; }
+  .stat-num span { color: #00c6ff; }
+  .stat-label { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .why {
+    background: #070b17;
+    padding: 6rem 3rem;
+    text-align: center;
+  }
+  .section-label {
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: #00c6ff; margin-bottom: 0.8rem;
+  }
+  .section-title { font-size: 2.4rem; font-weight: 700; color: #fff; margin-bottom: 1rem; }
+  .section-sub { font-size: 1rem; color: rgba(255,255,255,0.5); max-width: 500px; margin: 0 auto 3.5rem; line-height: 1.7; }
+
+  .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 900px; margin: 0 auto; }
+  .why-card {
+    background: rgba(255,255,255,0.03); border: 0.5px solid rgba(255,255,255,0.08);
+    border-radius: 16px; padding: 2rem 1.5rem; text-align: left;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .why-card:hover { border-color: rgba(0,198,255,0.3); background: rgba(0,114,255,0.06); }
+  .why-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: linear-gradient(135deg, rgba(0,198,255,0.15), rgba(0,114,255,0.15));
+    display: flex; align-items: center; justify-content: center; margin-bottom: 1.2rem;
+  }
+  .why-icon svg { width: 22px; height: 22px; }
+  .why-card h3 { font-size: 1rem; font-weight: 500; color: #fff; margin-bottom: 0.5rem; }
+  .why-card p { font-size: 0.875rem; color: rgba(255,255,255,0.45); line-height: 1.6; }
+
+  .problem {
+    background: #0a0f1e;
+    padding: 6rem 3rem;
+    display: flex; align-items: center; gap: 4rem;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .problem-imgs { position: relative; flex: 1; min-height: 360px; }
+  .problem-img1 {
+    width: 320px; height: 260px; border-radius: 16px; overflow: hidden;
+    border: 0.5px solid rgba(255,255,255,0.1);
+  }
+  .problem-img1 img { width: 100%; height: 100%; object-fit: cover; }
+  .problem-img2 {
+    width: 200px; height: 160px; border-radius: 14px; overflow: hidden;
+    position: absolute; bottom: 0; right: 40px;
+    border: 2px solid rgba(0,198,255,0.25);
+  }
+  .problem-img2 img { width: 100%; height: 100%; object-fit: cover; }
+  .problem-text { flex: 1; }
+  .problem-text h2 { font-size: 2.2rem; font-weight: 700; line-height: 1.2; margin-bottom: 1.2rem; }
+  .problem-text h2 span { color: #00c6ff; }
+  .problem-text p { color: rgba(255,255,255,0.55); font-size: 1rem; line-height: 1.7; margin-bottom: 1.5rem; }
+  .check-list { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .check-list li { display: flex; align-items: center; gap: 10px; font-size: 0.95rem; color: rgba(255,255,255,0.75); }
+  .check-list li::before {
+    content: ''; width: 18px; height: 18px; border-radius: 50%;
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    flex-shrink: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 18 18' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='9' cy='9' r='9' fill='%230072ff'/%3E%3Cpath d='M5 9.5l2.5 2.5 5-5' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+    background-size: cover;
+  }
+
+  .services {
+    background: #070b17; padding: 6rem 3rem; text-align: center;
+  }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 1000px; margin: 0 auto; }
+  .service-card {
+    border-radius: 20px; overflow: hidden; position: relative;
+    height: 280px; cursor: pointer;
+    border: 0.5px solid rgba(255,255,255,0.08);
+    transition: transform 0.3s;
+  }
+  .service-card:hover { transform: translateY(-4px); }
+  .service-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.5); transition: filter 0.3s; }
+  .service-card:hover img { filter: brightness(0.65); }
+  .service-card-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 1.5rem;
+    background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  }
+  .service-card-overlay h3 { font-size: 1rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem; }
+  .service-card-overlay p { font-size: 0.8rem; color: rgba(255,255,255,0.6); }
+  .service-card-tag {
+    position: absolute; top: 1rem; right: 1rem;
+    background: rgba(0,198,255,0.2); border: 0.5px solid rgba(0,198,255,0.4);
+    color: #00c6ff; font-size: 11px; padding: 3px 10px; border-radius: 12px; letter-spacing: 0.5px;
+  }
+
+  .cta-section {
+    background: radial-gradient(ellipse at 50% 50%, rgba(0,114,255,0.25), transparent 70%), #0a0f1e;
+    padding: 6rem 3rem; text-align: center;
+  }
+  .cta-section h2 { font-size: 2.8rem; font-weight: 700; margin-bottom: 1rem; }
+  .cta-section h2 span { color: #00c6ff; }
+  .cta-section p { font-size: 1.05rem; color: rgba(255,255,255,0.5); margin-bottom: 2.5rem; }
+  .cta-box {
+    display: inline-flex; gap: 1rem; align-items: center;
+    background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.1);
+    padding: 0.6rem 0.6rem 0.6rem 1.5rem; border-radius: 50px;
+  }
+  .cta-box input {
+    background: none; border: none; outline: none; color: #fff;
+    font-size: 14px; width: 220px; font-family: var(--font-sans);
+  }
+  .cta-box input::placeholder { color: rgba(255,255,255,0.35); }
+
+  .footer {
+    background: #070b17; padding: 2rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 0.5px solid rgba(255,255,255,0.07);
+  }
+  .footer p { font-size: 13px; color: rgba(255,255,255,0.3); }
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a { font-size: 13px; color: rgba(255,255,255,0.35); text-decoration: none; }
+  .footer-links a:hover { color: #fff; }
+</style>
+
+<nav class="nav">
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1 1l22 22M16.72 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39M10.71 5.05A16 16 0 0 1 22.56 9M1.42 9a15.91 15.91 0 0 1 4.7-2.88M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+    </div>
+    <span class="logo-text">CON<span>EX</span></span>
+  </div>
+  <div class="nav-links">
+    <a href="#">Servicios</a>
+    <a href="#">Nosotros</a>
+    <a href="#">Cobertura</a>
+    <a href="#">Casos de éxito</a>
+    <button class="nav-cta">Contáctanos</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Líderes en Latinoamérica</div>
+    <h1>Tu WiFi<br><span class="accent">sin límites.</span><br>Tu negocio<br>sin frenos.</h1>
+    <p>Expertos en conectividad que llevan tu WiFi al máximo potencial. Diagnóstico, instalación y soporte de primer nivel.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="sendPrompt('Quiero saber más sobre los servicios de Conex')">Solicitar diagnóstico gratis</button>
+      <button class="btn-secondary">Ver cómo trabajamos</button>
+    </div>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-num">+15<span>K</span></div>
+        <div class="stat-label">Clientes activos</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">12<span>+</span></div>
+        <div class="stat-label">Países en LATAM</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">98<span>%</span></div>
+        <div class="stat-label">Satisfacción</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-img-main">
+      <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=840&q=80" alt="Equipo Conex trabajando" />
+    </div>
+    <div class="hero-img-float">
+      <img src="https://images.unsplash.com/photo-1552581234-26160f608093?w=400&q=80" alt="Cliente feliz con WiFi" />
+    </div>
+  </div>
+</section>
+
+<section class="why">
+  <div class="section-label">¿Por qué Conex?</div>
+  <h2 class="section-title">La conexión que tu negocio merece</h2>
+  <p class="section-sub">Un WiFi deficiente cuesta caro. Productividad perdida, clientes frustrados, oportunidades que se van. Nosotros lo resolvemos.</p>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00c6ff" stroke-width="1.8" stroke-linecap="round">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+        </svg>
+      </div>
+      <h3>Diagnóstico en tiempo real</h3>
+      <p>Detectamos el problema antes de que afecte tu operación. Sin demoras, sin excusas.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00c6ff" stroke-width="1.8" stroke-linecap="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+      </div>
+      <h3>Garantía de calidad</h3>
+      <p>Cada instalación viene respaldada por nuestro equipo certificado y soporte 24/7.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00c6ff" stroke-width="1.8" stroke-linecap="round">
+          <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
+        </svg>
+      </div>
+      <h3>Respuesta inmediata</h3>
+      <p>Técnicos disponibles en menos de 4 horas. Sabemos que cada minuto cuenta.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00c6ff" stroke-width="1.8" stroke-linecap="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      </div>
+      <h3>Equipo especializado</h3>
+      <p>Más de 200 técnicos certificados distribuidos en toda Latinoamérica.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00c6ff" stroke-width="1.8" stroke-linecap="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+      </div>
+      <h3>Monitoreo continuo</h3>
+      <p>Tu red bajo vigilancia constante. Anticipamos problemas antes de que sucedan.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00c6ff" stroke-width="1.8" stroke-linecap="round">
+          <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>
+      </div>
+      <h3>Inversión inteligente</h3>
+      <p>Planes a medida para cada presupuesto. El mejor WiFi no tiene que costar una fortuna.</p>
+    </div>
+  </div>
+</section>
+
+<div style="background: #0a0f1e; padding: 6rem 3rem;">
+  <div class="problem" style="padding: 0;">
+    <div class="problem-imgs">
+      <div class="problem-img1">
+        <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=640&q=80" alt="Técnico Conex instalando red" />
+      </div>
+      <div class="problem-img2">
+        <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=400&q=80" alt="Equipo profesional Conex" />
+      </div>
+    </div>
+    <div class="problem-text">
+      <div class="section-label">El problema real</div>
+      <h2>El 73% de las empresas<br><span>pierden dinero</span> por mala<br>conectividad</h2>
+      <p>Reuniones cortadas, archivos que no cargan, clientes que se van. La mala señal tiene un costo real. Conex lo elimina.</p>
+      <ul class="check-list">
+        <li>Instalación profesional con tecnología enterprise</li>
+        <li>Cobertura total sin puntos muertos</li>
+        <li>Velocidad optimizada para tu uso específico</li>
+        <li>Escalable conforme tu negocio crece</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<section class="services">
+  <div class="section-label">Lo que hacemos</div>
+  <h2 class="section-title">Servicios de clase mundial</h2>
+  <p class="section-sub">Desde una oficina hasta un campus completo. Tenemos la solución.</p>
+  <div class="services-grid">
+    <div class="service-card">
+      <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=600&q=80" alt="Diagnóstico WiFi" />
+      <span class="service-card-tag">Popular</span>
+      <div class="service-card-overlay">
+        <h3>Diagnóstico y auditoría</h3>
+        <p>Análisis completo de tu red actual</p>
+      </div>
+    </div>
+    <div class="service-card">
+      <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?w=600&q=80" alt="Instalación WiFi empresarial" />
+      <div class="service-card-overlay">
+        <h3>Instalación empresarial</h3>
+        <p>Redes de alta densidad y rendimiento</p>
+      </div>
+    </div>
+    <div class="service-card">
+      <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&q=80" alt="Soporte y mantenimiento" />
+      <div class="service-card-overlay">
+        <h3>Soporte 24/7</h3>
+        <p>Técnicos siempre disponibles para ti</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="section-label">Da el primer paso</div>
+  <h2>Conecta al siguiente nivel.<br><span>Empieza hoy.</span></h2>
+  <p>Diagnóstico gratuito para tu empresa. Sin compromisos.</p>
+  <div class="cta-box">
+    <input type="text" placeholder="tu@empresa.com" />
+    <button class="btn-primary" onclick="sendPrompt('Quiero solicitar un diagnóstico gratuito de WiFi con Conex')">Solicitar diagnóstico gratis</button>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="logo" style="gap: 8px;">
+    <div class="logo-icon" style="width: 28px; height: 28px; border-radius: 7px;">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px;">
+        <path d="M1 1l22 22M16.72 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39M10.71 5.05A16 16 0 0 1 22.56 9M1.42 9a15.91 15.91 0 0 1 4.7-2.88M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+    </div>
+    <span style="font-size: 16px; font-weight: 600; letter-spacing: 2px; color: #fff;">CON<span style="color: #00c6ff;">EX</span></span>
+  </div>
+  <p>© 2026 Conex. Líderes en conectividad WiFi en Latinoamérica.</p>
+  <div class="footer-links">
+    <a href="#">Privacidad</a>
+    <a href="#">Términos</a>
+    <a href="#">Contacto</a>
+  </div>
+</footer>
